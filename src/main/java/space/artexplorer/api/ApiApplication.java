@@ -1,4 +1,4 @@
-package com.artexplorer.api;
+package space.artexplorer.api;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
