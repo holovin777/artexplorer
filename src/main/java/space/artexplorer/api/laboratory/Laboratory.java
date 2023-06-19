@@ -7,37 +7,92 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+
+import java.util.Objects;
+
 
 @Entity(name = "Laboratory")
-@Table(
-        name = "laboratory",
-        uniqueConstraints = {
-                @UniqueConstraint(
-                        name = "student_name_unique",
-                        columnNames = "name"
-                )
-        }
-)
+@Table(name = "laboratory")
 public class Laboratory {
         @Id
         @SequenceGenerator(
-                name = "customer_id_sequence",
-                sequenceName = "customer_id_sequence"
+                name = "laboratory_id_sequence",
+                sequenceName = "laboratory_id_sequence",
+                allocationSize = 1
         )
         @GeneratedValue(
                 strategy = GenerationType.SEQUENCE,
-                generator = "customer_id_sequence"
+                generator = "laboratory_id_sequence"
         )
-        private Integer id;
+        private Long id;
+
         @Column(
-                name="name",
+                name="title",
                 nullable = false,
                 columnDefinition = "TEXT"
         )
-        private String name;
+        private String title;
+
         @Column(
-                name = "photo"
+                name = "description",
+                nullable = false,
+                columnDefinition = "TEXT"
         )
-        private String photo;
+        private String description;
+
+
+        public Laboratory(String title, String description) {
+                this.title = title;
+                this.description = description;
+        }
+
+        public Laboratory() {
+        }
+
+        public Long getId() {
+                return id;
+        }
+
+        public void setId(Long id) {
+                this.id = id;
+        }
+
+        public String getTitle() {
+                return title;
+        }
+
+        public void setTitle(String title) {
+                this.title = title;
+        }
+
+        public String getDescription() {
+                return description;
+        }
+
+        public void setDescription(String description) {
+                this.description = description;
+        }
+
+
+        @Override
+        public boolean equals(Object o) {
+                if (this == o) return true;
+                if (o == null || getClass() != o.getClass()) return false;
+                Laboratory that = (Laboratory) o;
+                return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description);
+        }
+
+        @Override
+        public int hashCode() {
+                return Objects.hash(id, title, description);
+        }
+
+        @Override
+        public String toString() {
+                return "Laboratory{" +
+                        "id=" + id +
+                        ", title='" + title + '\'' +
+                        ", description='" + description + '\'' +
+                        '}';
+        }
 }
