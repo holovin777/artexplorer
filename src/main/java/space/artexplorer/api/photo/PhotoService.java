@@ -44,4 +44,8 @@ public class PhotoService {
             return this.photoRepository.findAll();
         }
 
+        public List<Photo> findPhotosByLaboratoryId(Long laboratoryId) {
+            return this.photoRepository.findPhotosByLaboratoryId(laboratoryId);
+        }
+
 }
