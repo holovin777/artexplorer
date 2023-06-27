@@ -1,6 +1,6 @@
 package space.artexplorer.api.photo;
 
-import jakarta.persistence.CascadeType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ForeignKey;
@@ -45,12 +45,13 @@ public class Photo {
     )
     private String url;
 
-    @ManyToOne(cascade = {CascadeType.REFRESH})
+    @ManyToOne
     @JoinColumn(
             name = "laboratory_id",
             referencedColumnName = "id",
             foreignKey = @ForeignKey(name = "laboratory_id_photo_fk")
     )
+    @JsonBackReference
     private Laboratory laboratory;
 
     public Photo(String url) {

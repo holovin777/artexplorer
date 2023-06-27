@@ -1,7 +1,11 @@
 package space.artexplorer.api.laboratory;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import space.artexplorer.api.photo.PhotoService;
 
 import java.util.List;
@@ -18,7 +22,8 @@ public class LaboratoryController {
         this.laboratoryService = laboratoryService;
         this.photoService = photoService;
     }
-    @GetMapping(name = "all")
+
+    @GetMapping(path = "all")
     List<Laboratory> getLaboratories() {
         return laboratoryService.getLaboratories();
     }
@@ -27,6 +32,5 @@ public class LaboratoryController {
     public void setLaboratory(@RequestBody Laboratory laboratory) {
         this.laboratoryService.setLaboratory(laboratory);
     }
-
 
 }

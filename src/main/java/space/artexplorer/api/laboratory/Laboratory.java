@@ -1,13 +1,11 @@
 package space.artexplorer.api.laboratory;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.*;
+import space.artexplorer.api.photo.Photo;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 
@@ -39,6 +37,16 @@ public class Laboratory {
                 columnDefinition = "TEXT"
         )
         private String description;
+
+        @Column(
+                name = "photos"
+        )
+        @OneToMany(
+                mappedBy = "laboratory",
+                cascade = {CascadeType.REFRESH}
+        )
+        @JsonManagedReference
+        private List<Photo> photos = new ArrayList<>();
 
 
         public Laboratory(String title, String description) {
@@ -73,18 +81,35 @@ public class Laboratory {
                 this.description = description;
         }
 
+        public List<Photo> getPhotos() {
+                return photos;
+        }
+
+        public void addPhoto(Photo photo) {
+                if (!this.photos.contains(photo)) {
+                        this.photos.add(photo);
+                        photo.setLaboratory(this);
+                }
+        }
+
+        public void removePhoto(Photo photo) {
+                if (this.photos.contains(photo)) {
+                        this.photos.remove(photo);
+                        photo.setLaboratory(null);
+                }
+        }
 
         @Override
         public boolean equals(Object o) {
                 if (this == o) return true;
                 if (o == null || getClass() != o.getClass()) return false;
                 Laboratory that = (Laboratory) o;
-                return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description);
+                return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(photos, that.photos);
         }
 
         @Override
         public int hashCode() {
-                return Objects.hash(id, title, description);
+                return Objects.hash(id, title, description, photos);
         }
 
         @Override
@@ -93,6 +118,8 @@ public class Laboratory {
                         "id=" + id +
                         ", title='" + title + '\'' +
                         ", description='" + description + '\'' +
+                        ", photos=" + photos +
                         '}';
         }
+
 }

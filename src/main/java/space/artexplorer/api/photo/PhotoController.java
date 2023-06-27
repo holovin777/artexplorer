@@ -39,4 +39,9 @@ public class PhotoController {
         return this.photoService.getPhotos();
     }
 
+    @GetMapping(path = "{laboratoryId}")
+    public List<Photo> findPhotosByLaboratoryId(@PathVariable Long laboratoryId) {
+        return this.photoService.findPhotosByLaboratoryId(laboratoryId);
+    }
+
 }
