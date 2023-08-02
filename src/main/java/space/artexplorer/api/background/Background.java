@@ -15,6 +15,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import space.artexplorer.api.laboratory.Laboratory;
 
+import java.util.Objects;
+
 @Entity(name = "Background")
 @Table(
         name = "background",
@@ -45,7 +47,7 @@ public class Background {
     )
     private String name;
 
-    @OneToOne(cascade = CascadeType.REFRESH)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "laboratory_id",
             referencedColumnName = "id",
@@ -53,5 +55,51 @@ public class Background {
     )
     @JsonBackReference
     private Laboratory laboratory;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Laboratory getLaboratory() {
+        return laboratory;
+    }
+
+    public void setLaboratory(Laboratory laboratory) {
+        this.laboratory = laboratory;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Background that = (Background) o;
+        return Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(laboratory, that.laboratory);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, laboratory);
+    }
+
+    @Override
+    public String toString() {
+        return "Background{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", laboratory=" + laboratory +
+                '}';
+    }
 
 }

@@ -33,4 +33,15 @@ public class LaboratoryService {
             throw new IllegalStateException("Laboratory with ID " + laboratoryId + " doesn't exists");
         }
 
+        @Transactional
+        public void deleteLaboratory(Long laboratoryId) {
+            Optional<Laboratory> laboratoryOptional = laboratoryRepository.findById(laboratoryId);
+            if (laboratoryOptional.isPresent()) {
+                Laboratory laboratory = laboratoryOptional.get();
+                this.laboratoryRepository.delete(laboratory);
+            } else {
+                throw new IllegalStateException("Laboratory with ID " + laboratoryId + " doesn't exists");
+            }
+        }
+
 }
