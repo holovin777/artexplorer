@@ -1,12 +1,13 @@
 package space.artexplorer.api.laboratory;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import space.artexplorer.api.photo.PhotoService;
 
 import java.util.List;
 
@@ -16,11 +17,10 @@ import java.util.List;
 
 public class LaboratoryController {
     private final LaboratoryService laboratoryService;
-    private final PhotoService photoService;
+
     @Autowired
-    public LaboratoryController(LaboratoryService laboratoryService, PhotoService photoService) {
+    public LaboratoryController(LaboratoryService laboratoryService) {
         this.laboratoryService = laboratoryService;
-        this.photoService = photoService;
     }
 
     @GetMapping(path = "all")
@@ -33,4 +33,8 @@ public class LaboratoryController {
         this.laboratoryService.setLaboratory(laboratory);
     }
 
+    @DeleteMapping(path="{laboratoryId}")
+    public void deleteLaboratory(@PathVariable Long laboratoryId) {
+        this.laboratoryService.deleteLaboratory(laboratoryId);
+    }
 }

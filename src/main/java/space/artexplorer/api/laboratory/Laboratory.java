@@ -1,12 +1,25 @@
 package space.artexplorer.api.laboratory;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.ForeignKey;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
+import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.Table;
+import space.artexplorer.api.background.Background;
+import space.artexplorer.api.category.Category;
 import space.artexplorer.api.photo.Photo;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 
 @Entity(name = "Laboratory")
@@ -38,16 +51,34 @@ public class Laboratory {
         )
         private String description;
 
-        @Column(
-                name = "photos"
-        )
         @OneToMany(
                 mappedBy = "laboratory",
-                cascade = {CascadeType.REFRESH}
+                cascade = {CascadeType.ALL}
         )
         @JsonManagedReference
         private List<Photo> photos = new ArrayList<>();
 
+        @OneToOne(
+                mappedBy = "laboratory",
+                cascade = {CascadeType.ALL}
+        )
+        @JsonManagedReference
+        private Background background;
+
+        @ManyToMany(cascade = CascadeType.ALL)
+        @JoinTable(
+                name = "collaboratorium",
+                joinColumns = @JoinColumn(
+                        name = "laboratory_id",
+                        foreignKey = @ForeignKey(name = "collaboratorium_laboratory_id_fk")
+                ),
+
+                inverseJoinColumns = @JoinColumn(
+                        name = "category_id",
+                        foreignKey = @ForeignKey(name = "collaboratorium_category_id_fk")
+                )
+        )
+        private Set<Category> categories = new HashSet<>();
 
         public Laboratory(String title, String description) {
                 this.title = title;
@@ -57,12 +88,12 @@ public class Laboratory {
         public Laboratory() {
         }
 
-        public Long getId() {
-                return id;
-        }
-
         public void setId(Long id) {
                 this.id = id;
+        }
+
+        public Long getId() {
+                return id;
         }
 
         public String getTitle() {
@@ -82,21 +113,29 @@ public class Laboratory {
         }
 
         public List<Photo> getPhotos() {
-                return photos;
+                return this.photos;
         }
 
-        public void addPhoto(Photo photo) {
+        public void setPhoto(Photo photo) {
                 if (!this.photos.contains(photo)) {
                         this.photos.add(photo);
                         photo.setLaboratory(this);
                 }
         }
 
-        public void removePhoto(Photo photo) {
+        public void deletePhoto(Photo photo) {
                 if (this.photos.contains(photo)) {
                         this.photos.remove(photo);
                         photo.setLaboratory(null);
                 }
+        }
+
+        public Background getBackground() {
+                return this.background;
+        }
+
+        public void setBackground(Background background) {
+                this.background = background;
         }
 
         @Override
@@ -104,12 +143,12 @@ public class Laboratory {
                 if (this == o) return true;
                 if (o == null || getClass() != o.getClass()) return false;
                 Laboratory that = (Laboratory) o;
-                return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(photos, that.photos);
+                return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(photos, that.photos) && Objects.equals(background, that.background);
         }
 
         @Override
         public int hashCode() {
-                return Objects.hash(id, title, description, photos);
+                return Objects.hash(id, title, description, photos, background);
         }
 
         @Override
@@ -119,7 +158,7 @@ public class Laboratory {
                         ", title='" + title + '\'' +
                         ", description='" + description + '\'' +
                         ", photos=" + photos +
+                        ", background=" + background +
                         '}';
         }
-
 }

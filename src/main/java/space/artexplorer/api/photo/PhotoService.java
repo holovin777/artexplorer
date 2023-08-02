@@ -31,7 +31,7 @@ public class PhotoService {
                 Laboratory laboratory = laboratoryOptional.get();
                 photo.setLaboratory(laboratory);
 
-                photoRepository.save(photo);
+                this.photoRepository.save(photo);
             }
         }
 
