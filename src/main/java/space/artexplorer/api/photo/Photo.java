@@ -49,7 +49,7 @@ public class Photo {
     @JoinColumn(
             name = "laboratory_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "laboratory_id_photo_fk")
+            foreignKey = @ForeignKey(name = "laboratory_photo_id_fk")
     )
     @JsonBackReference
     private Laboratory laboratory;

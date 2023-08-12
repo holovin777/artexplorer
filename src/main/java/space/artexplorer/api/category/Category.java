@@ -1,5 +1,8 @@
 package space.artexplorer.api.category;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,9 +13,9 @@ import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import space.artexplorer.api.laboratory.Laboratory;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity(name = "Category")
 @Table(name = "category")
@@ -37,9 +40,9 @@ public class Category {
     )
     private String name;
 
-
-    @ManyToMany(mappedBy = "categories")
-    private Set<Laboratory> laboratories = new HashSet<>();
+    @JsonIgnoreProperties("categories")
+    @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "categories")
+    private List<Laboratory> laboratories = new ArrayList<>();
 
     public Category(String name) {
         this.name = name;
@@ -63,15 +66,22 @@ public class Category {
         this.name = name;
     }
 
-    public Set<Laboratory> getLaboratories() {
+    public List<Laboratory> getLaboratories() {
         return this.laboratories;
     }
-    public void setLaboratory(Laboratory laboratory) {
+
+    public void setLaboratories(List<Laboratory> laboratories) {
+        this.laboratories = laboratories;
+    }
+
+    public void addLaboratory(Laboratory laboratory) {
         this.laboratories.add(laboratory);
+        laboratory.getCategories().add(this);
     }
 
     public void deleteLaboratory(Laboratory laboratory) {
         this.laboratories.remove(laboratory);
+        laboratory.getCategories().remove(this);
     }
 
     @Override

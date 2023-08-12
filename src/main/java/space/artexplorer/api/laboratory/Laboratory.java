@@ -1,5 +1,6 @@
 package space.artexplorer.api.laboratory;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -65,20 +66,22 @@ public class Laboratory {
         @JsonManagedReference
         private Background background;
 
-        @ManyToMany(cascade = CascadeType.ALL)
+        @JsonIgnoreProperties("laboratories")
+        @ManyToMany(cascade = {CascadeType.ALL})
         @JoinTable(
                 name = "collaboratorium",
                 joinColumns = @JoinColumn(
                         name = "laboratory_id",
                         foreignKey = @ForeignKey(name = "collaboratorium_laboratory_id_fk")
                 ),
-
                 inverseJoinColumns = @JoinColumn(
                         name = "category_id",
                         foreignKey = @ForeignKey(name = "collaboratorium_category_id_fk")
                 )
+
         )
-        private Set<Category> categories = new HashSet<>();
+        private List<Category> categories = new ArrayList<>();
+
 
         public Laboratory(String title, String description) {
                 this.title = title;
@@ -130,6 +133,20 @@ public class Laboratory {
                 }
         }
 
+        public List<Category> getCategories() {
+                return this.categories;
+        }
+
+        public void addCategory(Category category) {
+                this.categories.add(category);
+                category.getLaboratories().add(this);
+        }
+
+        public void deleteCategory(Category category) {
+                this.categories.remove(category);
+                category.getLaboratories().remove(this);
+        }
+
         public Background getBackground() {
                 return this.background;
         }
@@ -138,17 +155,21 @@ public class Laboratory {
                 this.background = background;
         }
 
+        public void setCategories(List<Category> categories) {
+                this.categories = categories;
+        }
+
         @Override
         public boolean equals(Object o) {
                 if (this == o) return true;
                 if (o == null || getClass() != o.getClass()) return false;
                 Laboratory that = (Laboratory) o;
-                return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(photos, that.photos) && Objects.equals(background, that.background);
+                return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(photos, that.photos) && Objects.equals(background, that.background) && Objects.equals(categories, that.categories);
         }
 
         @Override
         public int hashCode() {
-                return Objects.hash(id, title, description, photos, background);
+                return Objects.hash(id, title, description, photos, background, categories);
         }
 
         @Override
@@ -159,6 +180,7 @@ public class Laboratory {
                         ", description='" + description + '\'' +
                         ", photos=" + photos +
                         ", background=" + background +
+                        ", categories=" + categories +
                         '}';
         }
 }
