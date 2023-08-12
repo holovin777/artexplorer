@@ -11,37 +11,34 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class LaboratoryService {
         private final LaboratoryRepository laboratoryRepository;
-        @Autowired
-        public LaboratoryService(LaboratoryRepository laboratoryRepository) {
-            this.laboratoryRepository = laboratoryRepository;
-        }
 
-        public List<Laboratory> getLaboratories() {
-            return this.laboratoryRepository.findAll();
-        }
+    @Autowired
+    public LaboratoryService(LaboratoryRepository laboratoryRepository) {
+        this.laboratoryRepository = laboratoryRepository;
+    }
 
-        @Transactional
-        public void setLaboratory(Laboratory laboratory) {
-            this.laboratoryRepository.save(laboratory);
-        }
+    @Transactional
+    public void setLaboratory(Laboratory laboratory) {
+        this.laboratoryRepository.save(laboratory);
+    }
 
-        public Laboratory getLaboratory(Long laboratoryId) {
-            Optional<Laboratory> laboratoryOptional = laboratoryRepository.findById(laboratoryId);
-            if (laboratoryOptional.isPresent()) {
-                return laboratoryOptional.get();
-            }
+    public Laboratory getLaboratory(Long laboratoryId) {
+        Optional<Laboratory> laboratoryOptional = laboratoryRepository.findById(laboratoryId);
+        if (laboratoryOptional.isPresent()) {
+            Laboratory laboratory = laboratoryOptional.get();
+            return laboratory;
+        } else {
             throw new IllegalStateException("Laboratory with ID " + laboratoryId + " doesn't exists");
         }
+    }
 
-        @Transactional
-        public void deleteLaboratory(Long laboratoryId) {
-            Optional<Laboratory> laboratoryOptional = laboratoryRepository.findById(laboratoryId);
-            if (laboratoryOptional.isPresent()) {
-                Laboratory laboratory = laboratoryOptional.get();
-                this.laboratoryRepository.delete(laboratory);
-            } else {
-                throw new IllegalStateException("Laboratory with ID " + laboratoryId + " doesn't exists");
-            }
-        }
+    public List<Laboratory> getLaboratories() {
+        return this.laboratoryRepository.findAll();
+    }
+
+    @Transactional
+    public void deleteLaboratory(Long laboratoryId) {
+        laboratoryRepository.deleteById(laboratoryId);
+    }
 
 }

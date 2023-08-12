@@ -5,8 +5,10 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,4 +39,15 @@ public class BackgroundController {
     public void deleteBackground(@PathVariable Long backgroundId) {
         this.backgroundService.deleteBackground(backgroundId);
     }
+
+    @PutMapping(path = "{backgroundId}/setTextColor")
+    public void setTextColor(@PathVariable Long backgroundId, @RequestParam String textColor) {
+        this.backgroundService.setTextColor(backgroundId, textColor);
+    }
+    
+    @PutMapping(path = "{backgroundId}/setLaboratory")
+    public void setLaboratory(@PathVariable Long backgroundId, @RequestParam Long laboratoryId) {
+        this.backgroundService.setLaboratory(backgroundId, laboratoryId);
+    }
+
 }

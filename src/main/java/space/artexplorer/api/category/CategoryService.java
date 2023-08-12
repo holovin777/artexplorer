@@ -3,6 +3,8 @@ package space.artexplorer.api.category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import space.artexplorer.api.laboratory.Laboratory;
+import space.artexplorer.api.laboratory.LaboratoryRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,10 +13,12 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class CategoryService {
     private final CategoryRepository categoryRepository;
+    private final LaboratoryRepository laboratoryRepository;
 
     @Autowired
-    public CategoryService(CategoryRepository categoryRepository) {
+    public CategoryService(CategoryRepository categoryRepository, LaboratoryRepository laboratoryRepository) {
         this.categoryRepository = categoryRepository;
+        this.laboratoryRepository = laboratoryRepository;
     }
 
 
@@ -28,7 +32,7 @@ public class CategoryService {
     }
 
     public Category getCategory(Long categoryId) {
-        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+        Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
         if (categoryOptional.isPresent()) {
             return categoryOptional.get();
         }
@@ -37,7 +41,7 @@ public class CategoryService {
 
     @Transactional
     public void deleteCategory(Long categoryId) {
-        Optional<Category> categoryOptional = categoryRepository.findById(categoryId);
+        Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
         if (categoryOptional.isPresent()) {
             Category category = categoryOptional.get();
             this.categoryRepository.delete(category);
@@ -46,4 +50,17 @@ public class CategoryService {
         }
     }
 
+    @Transactional
+    public void addLaboratory(Long categoryId, Long laboratoryId) {
+        Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
+        Optional<Laboratory> laboratoryOptional = this.laboratoryRepository.findById(laboratoryId);
+        if (categoryOptional.isPresent() && laboratoryOptional.isPresent()) {
+            Category category = categoryOptional.get();
+            Laboratory laboratory = laboratoryOptional.get();
+            category.addLaboratory(laboratory);
+            this.categoryRepository.save(category);
+        } else {
+            throw new IllegalStateException("Category with ID " + categoryId + " or laboratory with ID " + laboratoryId + " doesn't exists");
+        }
+    }
 }

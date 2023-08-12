@@ -23,18 +23,24 @@ public class LaboratoryController {
         this.laboratoryService = laboratoryService;
     }
 
-    @GetMapping(path = "all")
-    List<Laboratory> getLaboratories() {
-        return laboratoryService.getLaboratories();
-    }
-
     @PostMapping
     public void setLaboratory(@RequestBody Laboratory laboratory) {
         this.laboratoryService.setLaboratory(laboratory);
     }
 
-    @DeleteMapping(path="{laboratoryId}")
-    public void deleteLaboratory(@PathVariable Long laboratoryId) {
+    @GetMapping("/{laboratoryId}")
+    public Laboratory getLaboratory(@PathVariable Long laboratoryId) {
+        return this.laboratoryService.getLaboratory(laboratoryId);
+    }
+
+    @GetMapping(value = "/all")
+    public List<Laboratory> getLaboratories() {
+        return this.laboratoryService.getLaboratories();
+    }
+
+    @DeleteMapping("/{laboratoryId}")
+    public void deleteLaboratoy(@PathVariable Long laboratoryId) {
         this.laboratoryService.deleteLaboratory(laboratoryId);
     }
+
 }

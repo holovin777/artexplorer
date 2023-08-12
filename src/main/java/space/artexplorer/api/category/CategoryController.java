@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import space.artexplorer.api.laboratory.LaboratoryService;
 
 import java.util.List;
 
@@ -15,10 +17,12 @@ import java.util.List;
 @RequestMapping(path="api/v1/category")
 public class CategoryController {
     private final CategoryService categoryService;
+    private final LaboratoryService laboratoryService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService) {
+    public CategoryController(CategoryService categoryService, LaboratoryService laboratoryService) {
         this.categoryService = categoryService;
+        this.laboratoryService = laboratoryService;
     }
 
     @GetMapping(path = "all")
@@ -39,5 +43,10 @@ public class CategoryController {
     @GetMapping(path = "{categoryId}")
     public Category getCategory(@PathVariable Long categoryId) {
         return this.categoryService.getCategory(categoryId);
+    }
+
+    @PostMapping(path = "{categoryId}/setLaboratory")
+    public void addLaboratory(@PathVariable Long categoryId, @RequestParam Long laboratoryId) {
+        this.categoryService.addLaboratory(categoryId, laboratoryId);
     }
 }

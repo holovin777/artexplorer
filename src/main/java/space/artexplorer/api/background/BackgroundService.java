@@ -3,7 +3,8 @@ package space.artexplorer.api.background;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import space.artexplorer.api.background.Background;
+import space.artexplorer.api.laboratory.Laboratory;
+import space.artexplorer.api.laboratory.LaboratoryRepository;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,10 +13,12 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class BackgroundService {
     private final BackgroundRepository backgroundRepository;
+    private final LaboratoryRepository laboratoryRepository;
 
     @Autowired
-    public BackgroundService(BackgroundRepository backgroundRepository) {
+    public BackgroundService(BackgroundRepository backgroundRepository, LaboratoryRepository laboratoryRepository) {
         this.backgroundRepository = backgroundRepository;
+        this.laboratoryRepository = laboratoryRepository;
     }
 
     public List<Background> getBackgrounds() {
@@ -46,4 +49,28 @@ public class BackgroundService {
         }
     }
 
+    @Transactional
+    public void setTextColor(Long backgroundId, String textColor) {
+        Optional<Background> backgroundOptional = this.backgroundRepository.findById(backgroundId);
+        if (backgroundOptional.isPresent()) {
+            Background background = backgroundOptional.get();
+            background.setTextColor(textColor);
+            this.backgroundRepository.save(background);
+        } else {
+            throw new IllegalStateException("Background with ID " + backgroundId + " doesn't exists");
+        }
+    }
+
+    @Transactional
+    public void setLaboratory(Long backgroundId, Long laboratoryId) {
+        Optional<Background> backgroundOptional = this.backgroundRepository.findById(backgroundId);
+        Optional<Laboratory> laboratoryOptional = this.laboratoryRepository.findById(laboratoryId);
+        if (backgroundOptional.isPresent() && laboratoryOptional.isPresent()) {
+            Background background = backgroundOptional.get();
+            Laboratory laboratory = laboratoryOptional.get();
+            background.setLaboratory(laboratory);
+        } else {
+            throw new IllegalStateException("Background with ID " + backgroundId + " or laboratory with ID " + laboratoryId + " doesn't exists");
+        }
+    }
 }
