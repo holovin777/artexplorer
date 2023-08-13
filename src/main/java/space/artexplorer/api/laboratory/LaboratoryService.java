@@ -38,7 +38,19 @@ public class LaboratoryService {
 
     @Transactional
     public void deleteLaboratory(Long laboratoryId) {
-        laboratoryRepository.deleteById(laboratoryId);
+        this.laboratoryRepository.deleteById(laboratoryId);
+    }
+
+    @Transactional
+    public void updateTitle(Long laboratoryId, String title) {
+        Optional<Laboratory> optionalLaboratory = this.laboratoryRepository.findById(laboratoryId);
+        if (optionalLaboratory.isPresent() && !title.isEmpty()) {
+            Laboratory laboratory = optionalLaboratory.get();
+            laboratory.setTitle(title);
+            this.laboratoryRepository.save(laboratory);
+        } else {
+            throw new IllegalStateException("Laboratory with ID " + laboratoryId + " doesn't exists or " + title + " is empty");
+        }
     }
 
 }

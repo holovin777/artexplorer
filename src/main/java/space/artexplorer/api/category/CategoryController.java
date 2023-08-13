@@ -45,8 +45,14 @@ public class CategoryController {
         return this.categoryService.getCategory(categoryId);
     }
 
-    @PostMapping(path = "{categoryId}/setLaboratory")
+    @PostMapping(path = "{categoryId}/addLaboratory")
     public void addLaboratory(@PathVariable Long categoryId, @RequestParam Long laboratoryId) {
         this.categoryService.addLaboratory(categoryId, laboratoryId);
     }
+
+    @DeleteMapping(path = "{categoryId}/deleteLaboratory")
+    public void deleteLaboratory(@PathVariable Long categoryId, @RequestParam Long laboratoryId) {
+        this.categoryService.deleteLaboratory(categoryId, laboratoryId);
+    }
+
 }
