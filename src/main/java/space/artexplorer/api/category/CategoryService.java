@@ -63,4 +63,19 @@ public class CategoryService {
             throw new IllegalStateException("Category with ID " + categoryId + " or laboratory with ID " + laboratoryId + " doesn't exists");
         }
     }
+
+    @Transactional
+    public void deleteLaboratory(Long categoryId, Long laboratoryId) {
+        Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
+        Optional<Laboratory> laboratoryOptional = this.laboratoryRepository.findById(laboratoryId);
+        if (categoryOptional.isPresent() && laboratoryOptional.isPresent()) {
+            Category category = categoryOptional.get();
+            Laboratory laboratory = laboratoryOptional.get();
+            category.deleteLaboratory(laboratory);
+            this.categoryRepository.save(category);
+        } else {
+            throw new IllegalStateException("Category with ID " + categoryId + " or laboratory with ID " + laboratoryId + " doesn't exists");
+        }
+    }
+
 }
