@@ -54,6 +54,11 @@ public class Photo {
     @JsonBackReference
     private Laboratory laboratory;
 
+    @Column(
+            name = "sequence"
+    )
+    private int sequence;
+
     public Photo(String url) {
         this.url = url;
     }
@@ -90,17 +95,25 @@ public class Photo {
         return this.laboratory;
     }
 
+    public int getSequence() {
+        return sequence;
+    }
+
+    public void setSequence(int sequence) {
+        this.sequence = sequence;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Photo photo = (Photo) o;
-        return Objects.equals(id, photo.id) && Objects.equals(url, photo.url) && Objects.equals(laboratory, photo.laboratory);
+        return sequence == photo.sequence && Objects.equals(id, photo.id) && Objects.equals(url, photo.url) && Objects.equals(laboratory, photo.laboratory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, url, laboratory);
+        return Objects.hash(id, url, laboratory, sequence);
     }
 
     @Override
@@ -109,6 +122,7 @@ public class Photo {
                 "id=" + id +
                 ", url='" + url + '\'' +
                 ", laboratory=" + laboratory +
+                ", sequence=" + sequence +
                 '}';
     }
 

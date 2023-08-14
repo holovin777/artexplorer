@@ -44,4 +44,9 @@ public class PhotoController {
         return this.photoService.findPhotosByLaboratoryId(laboratoryId);
     }
 
+    @PutMapping(path = "{photoId}")
+    public void setPhotoSequence(@PathVariable Long photoId, @RequestParam int sequence) {
+        this.photoService.setPhotoSequence(photoId, sequence);
+    }
+
 }

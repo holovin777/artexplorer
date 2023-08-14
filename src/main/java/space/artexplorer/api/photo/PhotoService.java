@@ -37,7 +37,7 @@ public class PhotoService {
 
         @Transactional
         public void setPhoto(Photo photo) {
-                photoRepository.save(photo);
+                this.photoRepository.save(photo);
         }
 
         public List<Photo> getPhotos() {
@@ -46,6 +46,16 @@ public class PhotoService {
 
         public List<Photo> findPhotosByLaboratoryId(Long laboratoryId) {
             return this.photoRepository.findPhotosByLaboratoryId(laboratoryId);
+        }
+
+        @Transactional
+        public void setPhotoSequence(Long photoId, int sequence) {
+            Optional<Photo> photoOptional = this.photoRepository.findById(photoId);
+            if (photoOptional.isPresent()) {
+                Photo photo = photoOptional.get();
+                photo.setSequence(sequence);
+                this.photoRepository.save(photo);
+            }
         }
 
 }
