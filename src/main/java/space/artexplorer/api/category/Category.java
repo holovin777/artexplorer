@@ -1,42 +1,34 @@
 package space.artexplorer.api.category;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import space.artexplorer.api.laboratory.Laboratory;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import static space.artexplorer.api.methods.StringManipulatorUtils.generateStringId;
+
 @Entity(name = "Category")
-@Table(name = "category")
+@Table(
+    name = "category",
+    uniqueConstraints = {
+        @UniqueConstraint(
+                name = "category_name_unique",
+                columnNames = "name"
+        )
+    }
+)
 public class Category {
 
     @Id
-    @SequenceGenerator(
-            name = "category_id_sequence",
-            sequenceName = "category_id_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "category_id_sequence"
-    )
-    private Long id;
+    private String id;
 
     @Column(
-            name="name",
-            nullable = false,
-            columnDefinition = "TEXT"
+        name="name",
+        nullable = false,
+        columnDefinition = "TEXT"
     )
     private String name;
 
@@ -50,11 +42,11 @@ public class Category {
 
     public Category() {}
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -82,6 +74,12 @@ public class Category {
     public void deleteLaboratory(Laboratory laboratory) {
         this.laboratories.remove(laboratory);
         laboratory.getCategories().remove(this);
+    }
+    @PrePersist
+    public void generateIdFromName() {
+        if (this.id == null && this.name != null) {
+            this.id = generateStringId(this.name);
+        }
     }
 
     @Override

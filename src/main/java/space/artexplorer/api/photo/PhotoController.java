@@ -29,9 +29,9 @@ public class PhotoController {
         this.photoService.setPhoto(photo);
     }
 
-    @PutMapping(path = "laboratory/{laboratoryId}")
-    public void setLaboratory(@PathVariable Long laboratoryId, @RequestParam String photoUrl) {
-        this.photoService.setLaboratory(laboratoryId, photoUrl);
+    @PutMapping(path = "{photoId}/laboratory")
+    public void setLaboratory(@PathVariable String photoId, @RequestParam String laboratoryId) {
+        this.photoService.setLaboratory(laboratoryId, photoId);
     }
 
     @GetMapping(path = "all")
@@ -40,13 +40,17 @@ public class PhotoController {
     }
 
     @GetMapping(path = "laboratory/{laboratoryId}")
-    public List<Photo> findPhotosByLaboratoryId(@PathVariable Long laboratoryId) {
+    public List<Photo> findPhotosByLaboratoryId(@PathVariable String laboratoryId) {
         return this.photoService.findPhotosByLaboratoryId(laboratoryId);
     }
 
     @PutMapping(path = "{photoId}")
-    public void setPhotoSequence(@PathVariable Long photoId, @RequestParam int sequence) {
-        this.photoService.setPhotoSequence(photoId, sequence);
+    public void updatePhoto(
+            @PathVariable String photoId,
+            @RequestParam(required = false) String photoUrl,
+            @RequestParam(required = false) Integer photoSequence
+    ) {
+        this.photoService.updatePhoto(photoId, photoUrl, photoSequence);
     }
 
 }

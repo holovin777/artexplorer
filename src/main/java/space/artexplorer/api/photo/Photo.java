@@ -1,42 +1,26 @@
 package space.artexplorer.api.photo;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import space.artexplorer.api.laboratory.Laboratory;
 
 import java.util.Objects;
+
+import static space.artexplorer.api.methods.StringManipulatorUtils.generateStringId;
 
 @Entity(name = "Photo")
 @Table(
         name = "photo",
         uniqueConstraints = {
                 @UniqueConstraint(
-                        name = "photo_name_unique",
+                        name = "photo_url_unique",
                         columnNames = "url"
                 )
         }
 )
 public class Photo {
     @Id
-    @SequenceGenerator(
-            name = "photo_id_sequence",
-            sequenceName = "photo_id_sequence"
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "photo_id_sequence"
-    )
-    private Long id;
+    private String id;
 
     @Column(
             name = "url",
@@ -71,11 +55,11 @@ public class Photo {
     public Photo() {
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -101,6 +85,13 @@ public class Photo {
 
     public void setSequence(int sequence) {
         this.sequence = sequence;
+    }
+
+    @PrePersist
+    public void generateIdFromUrl() {
+        if (this.id == null && this.url != null) {
+            this.id = generateStringId(this.url);
+        }
     }
 
     @Override

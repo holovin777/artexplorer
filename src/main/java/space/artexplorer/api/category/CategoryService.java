@@ -31,7 +31,7 @@ public class CategoryService {
         this.categoryRepository.save(category);
     }
 
-    public Category getCategory(Long categoryId) {
+    public Category getCategory(String categoryId) {
         Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
         if (categoryOptional.isPresent()) {
             return categoryOptional.get();
@@ -40,7 +40,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public void deleteCategory(Long categoryId) {
+    public void deleteCategory(String categoryId) {
         Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
         if (categoryOptional.isPresent()) {
             Category category = categoryOptional.get();
@@ -51,7 +51,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public void addLaboratory(Long categoryId, Long laboratoryId) {
+    public void addLaboratory(String categoryId, String laboratoryId) {
         Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
         Optional<Laboratory> laboratoryOptional = this.laboratoryRepository.findById(laboratoryId);
         if (categoryOptional.isPresent() && laboratoryOptional.isPresent()) {
@@ -65,7 +65,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public void deleteLaboratory(Long categoryId, Long laboratoryId) {
+    public void deleteLaboratory(String categoryId, String laboratoryId) {
         Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
         Optional<Laboratory> laboratoryOptional = this.laboratoryRepository.findById(laboratoryId);
         if (categoryOptional.isPresent() && laboratoryOptional.isPresent()) {

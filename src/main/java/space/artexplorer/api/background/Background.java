@@ -1,18 +1,7 @@
 package space.artexplorer.api.background;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import space.artexplorer.api.laboratory.Laboratory;
 
 import java.util.Objects;
@@ -24,6 +13,10 @@ import java.util.Objects;
                 @UniqueConstraint(
                         name = "background_url_unique",
                         columnNames = "url"
+                ),
+                @UniqueConstraint(
+                        name = "background_laboratory_id_key",
+                        columnNames = "laboratory_id"
                 )
         }
 )
@@ -57,23 +50,27 @@ public class Background {
     @JoinColumn(
             name = "laboratory_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "laboratory_background_id_fk")
+            foreignKey = @ForeignKey(name = "laboratory_background_id_fk"),
+            unique = true
     )
     @JsonBackReference
     private Laboratory laboratory;
 
-    public Background(String url, String textColor, Laboratory laboratory) {
+    public Background(Long id, String url, String textColor, Laboratory laboratory) {
+        this.id = id;
         this.url = url;
         this.textColor = textColor;
         this.laboratory = laboratory;
     }
 
-    public Background(String url, Laboratory laboratory) {
+    public Background(Long id, String url, String textColor) {
+        this.id = id;
         this.url = url;
-        this.laboratory = laboratory;
+        this.textColor = textColor;
     }
 
-    public Background(String url) {
+    public Background(Long id, String url) {
+        this.id = id;
         this.url = url;
     }
 
@@ -134,5 +131,4 @@ public class Background {
                 ", laboratory=" + laboratory +
                 '}';
     }
-
 }

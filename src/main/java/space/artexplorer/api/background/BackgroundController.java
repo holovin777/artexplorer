@@ -40,13 +40,18 @@ public class BackgroundController {
         this.backgroundService.deleteBackground(backgroundId);
     }
 
-    @PutMapping(path = "{backgroundId}/setTextColor")
-    public void setTextColor(@PathVariable Long backgroundId, @RequestParam String textColor) {
-        this.backgroundService.setTextColor(backgroundId, textColor);
+    @PutMapping(path = "{backgroundId}")
+    public void setTextColor(
+            @PathVariable Long backgroundId,
+            @RequestParam(required = false) String backgroundUrl,
+            @RequestParam(required = false) String backgroundTextColor
+    )
+    {
+        this.backgroundService.updateBackground(backgroundId, backgroundUrl, backgroundTextColor);
     }
     
-    @PutMapping(path = "{backgroundId}/setLaboratory")
-    public void setLaboratory(@PathVariable Long backgroundId, @RequestParam Long laboratoryId) {
+    @PutMapping(path = "{backgroundId}/laboratory")
+    public void seLaboratory(@PathVariable Long backgroundId, @RequestParam String laboratoryId) {
         this.backgroundService.setLaboratory(backgroundId, laboratoryId);
     }
 

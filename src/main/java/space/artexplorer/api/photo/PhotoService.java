@@ -12,50 +12,55 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 public class PhotoService {
-        private final PhotoRepository photoRepository;
-        private final LaboratoryRepository laboratoryRepository;
-        @Autowired
-        public PhotoService(PhotoRepository photoRepository, LaboratoryRepository laboratoryRepository) {
-            this.photoRepository = photoRepository;
-            this.laboratoryRepository = laboratoryRepository;
-        }
+    private final PhotoRepository photoRepository;
+    private final LaboratoryRepository laboratoryRepository;
+    @Autowired
+    public PhotoService(PhotoRepository photoRepository, LaboratoryRepository laboratoryRepository) {
+        this.photoRepository = photoRepository;
+        this.laboratoryRepository = laboratoryRepository;
+    }
 
-        @Transactional
-        public void setLaboratory(Long laboratoryId, String photoUrl) {
-            Optional<Laboratory> laboratoryOptional = this.laboratoryRepository.findById(laboratoryId);
-            Optional<Photo> photoOptional = this.photoRepository.findByUrl(photoUrl);
-            if (laboratoryOptional.isPresent() && photoOptional.isPresent()) {
-                Photo photo = photoOptional.get();
+    @Transactional
+    public void setLaboratory(String laboratoryId, String photoId) {
+        Optional<Laboratory> laboratoryOptional = this.laboratoryRepository.findById(laboratoryId);
+        Optional<Photo> photoOptional = this.photoRepository.findById(photoId);
+        if (laboratoryOptional.isPresent() && photoOptional.isPresent()) {
+            Photo photo = photoOptional.get();
+            Laboratory laboratory = laboratoryOptional.get();
+            photo.setLaboratory(laboratory);
+            this.photoRepository.save(photo);
+        }
+    }
+
+    @Transactional
+    public void setPhoto(Photo photo) {
+            this.photoRepository.save(photo);
+    }
+
+    public List<Photo> getPhotos() {
+        return this.photoRepository.findAll();
+    }
+
+    public List<Photo> findPhotosByLaboratoryId(String laboratoryId) {
+        return this.photoRepository.findPhotosByLaboratoryId(laboratoryId);
+    }
+
+    @Transactional
+    public void updatePhoto(String photoId, String photoUrl, Integer photoSequence) {
+        Optional<Photo> photoOptional = this.photoRepository.findById(photoId);
+        if (photoOptional.isPresent()) {
+            Photo photo = photoOptional.get();
+            if (photoUrl != null) {
                 photo.setUrl(photoUrl);
-
-                Laboratory laboratory = laboratoryOptional.get();
-                photo.setLaboratory(laboratory);
-
                 this.photoRepository.save(photo);
             }
-        }
-
-        @Transactional
-        public void setPhoto(Photo photo) {
-                this.photoRepository.save(photo);
-        }
-
-        public List<Photo> getPhotos() {
-            return this.photoRepository.findAll();
-        }
-
-        public List<Photo> findPhotosByLaboratoryId(Long laboratoryId) {
-            return this.photoRepository.findPhotosByLaboratoryId(laboratoryId);
-        }
-
-        @Transactional
-        public void setPhotoSequence(Long photoId, int sequence) {
-            Optional<Photo> photoOptional = this.photoRepository.findById(photoId);
-            if (photoOptional.isPresent()) {
-                Photo photo = photoOptional.get();
-                photo.setSequence(sequence);
+            if (photoSequence != null) {
+                photo.setSequence(photoSequence);
                 this.photoRepository.save(photo);
             }
+        } else {
+            throw new IllegalStateException("Photo with id " + photoId + " doesn't exists");
         }
+    }
 
 }

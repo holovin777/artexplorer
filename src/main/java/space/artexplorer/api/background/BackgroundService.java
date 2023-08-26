@@ -50,25 +50,32 @@ public class BackgroundService {
     }
 
     @Transactional
-    public void setTextColor(Long backgroundId, String textColor) {
+    public void updateBackground(Long backgroundId, String backgroundUrl,  String backgroundTextColor) {
         Optional<Background> backgroundOptional = this.backgroundRepository.findById(backgroundId);
         if (backgroundOptional.isPresent()) {
             Background background = backgroundOptional.get();
-            background.setTextColor(textColor);
-            this.backgroundRepository.save(background);
+            if (backgroundUrl != null) {
+                background.setUrl(backgroundUrl);
+                this.backgroundRepository.save(background);
+            }
+            if (backgroundTextColor != null) {
+                background.setTextColor(backgroundTextColor);
+                this.backgroundRepository.save(background);
+            }
         } else {
             throw new IllegalStateException("Background with ID " + backgroundId + " doesn't exists");
         }
     }
 
     @Transactional
-    public void setLaboratory(Long backgroundId, Long laboratoryId) {
+    public void setLaboratory(Long backgroundId, String laboratoryId) {
         Optional<Background> backgroundOptional = this.backgroundRepository.findById(backgroundId);
         Optional<Laboratory> laboratoryOptional = this.laboratoryRepository.findById(laboratoryId);
         if (backgroundOptional.isPresent() && laboratoryOptional.isPresent()) {
             Background background = backgroundOptional.get();
             Laboratory laboratory = laboratoryOptional.get();
             background.setLaboratory(laboratory);
+            this.backgroundRepository.save(background);
         } else {
             throw new IllegalStateException("Background with ID " + backgroundId + " or laboratory with ID " + laboratoryId + " doesn't exists");
         }

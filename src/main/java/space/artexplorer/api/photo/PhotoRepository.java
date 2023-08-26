@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface PhotoRepository extends JpaRepository<Photo, Long> {
+public interface PhotoRepository extends JpaRepository<Photo, String> {
     Optional<Photo> findByUrl(String url);
-    List<Photo> findPhotosByLaboratoryId(Long laboratoryId);
+    List<Photo> findPhotosByLaboratoryId(String laboratoryId);
 }
