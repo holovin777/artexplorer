@@ -10,7 +10,7 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 public class LaboratoryService {
-        private final LaboratoryRepository laboratoryRepository;
+    private final LaboratoryRepository laboratoryRepository;
 
     @Autowired
     public LaboratoryService(LaboratoryRepository laboratoryRepository) {
@@ -22,7 +22,7 @@ public class LaboratoryService {
         this.laboratoryRepository.save(laboratory);
     }
 
-    public Laboratory getLaboratory(Long laboratoryId) {
+    public Laboratory getLaboratory(String laboratoryId) {
         Optional<Laboratory> laboratoryOptional = laboratoryRepository.findById(laboratoryId);
         if (laboratoryOptional.isPresent()) {
             Laboratory laboratory = laboratoryOptional.get();
@@ -37,19 +37,25 @@ public class LaboratoryService {
     }
 
     @Transactional
-    public void deleteLaboratory(Long laboratoryId) {
+    public void deleteLaboratory(String laboratoryId) {
         this.laboratoryRepository.deleteById(laboratoryId);
     }
 
     @Transactional
-    public void updateTitle(Long laboratoryId, String title) {
+    public void updateLaboratory(String laboratoryId, String laboratoryTitle, String laboratoryDescription) {
         Optional<Laboratory> optionalLaboratory = this.laboratoryRepository.findById(laboratoryId);
-        if (optionalLaboratory.isPresent() && !title.isEmpty()) {
+        if (optionalLaboratory.isPresent()) {
             Laboratory laboratory = optionalLaboratory.get();
-            laboratory.setTitle(title);
-            this.laboratoryRepository.save(laboratory);
+            if (laboratoryTitle != null) {
+                laboratory.setTitle(laboratoryTitle);
+                this.laboratoryRepository.save(laboratory);
+            }
+            if (laboratoryDescription != null) {
+                laboratory.setDescription(laboratoryDescription);
+                this.laboratoryRepository.save(laboratory);
+            }
         } else {
-            throw new IllegalStateException("Laboratory with ID " + laboratoryId + " doesn't exists or " + title + " is empty");
+            throw new IllegalStateException("Laboratory with ID " + laboratoryId + " doesn't exists");
         }
     }
 

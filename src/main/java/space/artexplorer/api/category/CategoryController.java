@@ -1,14 +1,7 @@
 package space.artexplorer.api.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import space.artexplorer.api.laboratory.LaboratoryService;
 
 import java.util.List;
@@ -36,22 +29,22 @@ public class CategoryController {
     }
 
     @DeleteMapping(path="{categoryId}")
-    public void deleteCategory(@PathVariable Long categoryId) {
+    public void deleteCategory(@PathVariable String categoryId) {
         this.categoryService.deleteCategory(categoryId);
     }
 
     @GetMapping(path = "{categoryId}")
-    public Category getCategory(@PathVariable Long categoryId) {
+    public Category getCategory(@PathVariable String categoryId) {
         return this.categoryService.getCategory(categoryId);
     }
 
-    @PostMapping(path = "{categoryId}/addLaboratory")
-    public void addLaboratory(@PathVariable Long categoryId, @RequestParam Long laboratoryId) {
+    @PutMapping(path = "{categoryId}/laboratory")
+    public void addLaboratory(@PathVariable String categoryId, @RequestParam String laboratoryId) {
         this.categoryService.addLaboratory(categoryId, laboratoryId);
     }
 
-    @DeleteMapping(path = "{categoryId}/deleteLaboratory")
-    public void deleteLaboratory(@PathVariable Long categoryId, @RequestParam Long laboratoryId) {
+    @DeleteMapping(path = "{categoryId}/laboratory")
+    public void deleteLaboratory(@PathVariable String categoryId, @RequestParam String laboratoryId) {
         this.categoryService.deleteLaboratory(categoryId, laboratoryId);
     }
 

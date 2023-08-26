@@ -31,7 +31,7 @@ public class LaboratoryController {
     }
 
     @GetMapping("/{laboratoryId}")
-    public Laboratory getLaboratory(@PathVariable Long laboratoryId) {
+    public Laboratory getLaboratory(@PathVariable String laboratoryId) {
         return this.laboratoryService.getLaboratory(laboratoryId);
     }
 
@@ -41,13 +41,16 @@ public class LaboratoryController {
     }
 
     @DeleteMapping("/{laboratoryId}")
-    public void deleteLaboratoy(@PathVariable Long laboratoryId) {
+    public void deleteLaboratoy(@PathVariable String laboratoryId) {
         this.laboratoryService.deleteLaboratory(laboratoryId);
     }
 
-    @PutMapping("/{laboratoryId}/setTitle")
-    public void updateTitle(@PathVariable Long laboratoryId, @RequestParam String title) {
-        this.laboratoryService.updateTitle(laboratoryId, title);
+    @PutMapping("/{laboratoryId}")
+    public void updateLaboratory(
+            @PathVariable String laboratoryId,
+            @RequestParam(required = false) String laboratoryTitle,
+            @RequestParam(required = false) String laboratoryDescription) {
+        this.laboratoryService.updateLaboratory(laboratoryId, laboratoryTitle, laboratoryDescription);
     }
 
 }

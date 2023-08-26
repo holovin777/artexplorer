@@ -2,41 +2,36 @@ package space.artexplorer.api.laboratory;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ForeignKey;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import space.artexplorer.api.background.Background;
 import space.artexplorer.api.category.Category;
 import space.artexplorer.api.photo.Photo;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import static space.artexplorer.api.methods.StringManipulatorUtils.generateStringId;
 
 
 @Entity(name = "Laboratory")
-@Table(name = "laboratory")
+@Table(
+        name = "laboratory",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "laboratory_title_unique",
+                        columnNames = "title"
+                ),
+                @UniqueConstraint(
+                        name = "laboratory_description_unique",
+                        columnNames = "description"
+                )
+        }
+)
+
 public class Laboratory {
         @Id
-        @SequenceGenerator(
-                name = "laboratory_id_sequence",
-                sequenceName = "laboratory_id_sequence",
-                allocationSize = 1
-        )
-        @GeneratedValue(
-                strategy = GenerationType.SEQUENCE,
-                generator = "laboratory_id_sequence"
-        )
-        private Long id;
+        private String id;
 
         @Column(
                 name="title",
@@ -91,11 +86,11 @@ public class Laboratory {
         public Laboratory() {
         }
 
-        public void setId(Long id) {
+        public void setId(String id) {
                 this.id = id;
         }
 
-        public Long getId() {
+        public String getId() {
                 return id;
         }
 
@@ -157,6 +152,13 @@ public class Laboratory {
 
         public void setCategories(List<Category> categories) {
                 this.categories = categories;
+        }
+
+        @PrePersist
+        public void generateIdFromTitle() {
+                if (this.id == null && this.title != null) {
+                        this.id = generateStringId(this.title);
+                }
         }
 
         @Override
