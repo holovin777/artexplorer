@@ -45,7 +45,7 @@ public class LaboratoryController {
         this.laboratoryService.deleteLaboratory(laboratoryId);
     }
 
-    @PutMapping("/{laboratoryId}")
+    @PutMapping("/{laboratoryId}/update")
     public void updateLaboratory(
             @PathVariable String laboratoryId,
             @RequestParam(required = false) String laboratoryTitle,
