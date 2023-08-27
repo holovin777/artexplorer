@@ -40,8 +40,8 @@ public class BackgroundController {
         this.backgroundService.deleteBackground(backgroundId);
     }
 
-    @PutMapping(path = "{backgroundId}")
-    public void setTextColor(
+    @PutMapping(path = "{backgroundId}/update")
+    public void updateBackground(
             @PathVariable Long backgroundId,
             @RequestParam(required = false) String backgroundUrl,
             @RequestParam(required = false) String backgroundTextColor

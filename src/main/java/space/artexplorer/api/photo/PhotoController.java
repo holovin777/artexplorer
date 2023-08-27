@@ -44,7 +44,7 @@ public class PhotoController {
         return this.photoService.findPhotosByLaboratoryId(laboratoryId);
     }
 
-    @PutMapping(path = "{photoId}")
+    @PutMapping(path = "{photoId}/update")
     public void updatePhoto(
             @PathVariable String photoId,
             @RequestParam(required = false) String photoUrl,
