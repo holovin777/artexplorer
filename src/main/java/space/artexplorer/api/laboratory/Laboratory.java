@@ -5,13 +5,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import space.artexplorer.api.background.Background;
 import space.artexplorer.api.category.Category;
+import space.artexplorer.api.methods.StringManipulatorUtils;
 import space.artexplorer.api.photo.Photo;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static space.artexplorer.api.methods.StringManipulatorUtils.generateStringId;
 
 
 @Entity(name = "Laboratory")
@@ -21,10 +20,6 @@ import static space.artexplorer.api.methods.StringManipulatorUtils.generateStrin
                 @UniqueConstraint(
                         name = "laboratory_title_unique",
                         columnNames = "title"
-                ),
-                @UniqueConstraint(
-                        name = "laboratory_description_unique",
-                        columnNames = "description"
                 )
         }
 )
@@ -157,7 +152,7 @@ public class Laboratory {
         @PrePersist
         public void generateIdFromTitle() {
                 if (this.id == null && this.title != null) {
-                        this.id = generateStringId(this.title);
+                        this.id = StringManipulatorUtils.generateStringId(this.title);
                 }
         }
 
