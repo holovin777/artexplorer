@@ -44,10 +44,11 @@ public class BackgroundController {
     public void updateBackground(
             @PathVariable Long backgroundId,
             @RequestParam(required = false) String backgroundUrl,
-            @RequestParam(required = false) String backgroundTextColor
+            @RequestParam(required = false) String backgroundTextColor,
+            @RequestParam(required = false) String backgroundTitleTextColor
     )
     {
-        this.backgroundService.updateBackground(backgroundId, backgroundUrl, backgroundTextColor);
+        this.backgroundService.updateBackground(backgroundId, backgroundUrl, backgroundTextColor, backgroundTitleTextColor);
     }
     
     @PutMapping(path = "{backgroundId}/laboratory")
