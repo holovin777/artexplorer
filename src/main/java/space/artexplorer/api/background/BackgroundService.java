@@ -50,7 +50,7 @@ public class BackgroundService {
     }
 
     @Transactional
-    public void updateBackground(Long backgroundId, String backgroundUrl,  String backgroundTextColor) {
+    public void updateBackground(Long backgroundId, String backgroundUrl, String backgroundTextColor, String backgroundTitleTextColor) {
         Optional<Background> backgroundOptional = this.backgroundRepository.findById(backgroundId);
         if (backgroundOptional.isPresent()) {
             Background background = backgroundOptional.get();
@@ -60,6 +60,10 @@ public class BackgroundService {
             }
             if (backgroundTextColor != null) {
                 background.setTextColor(backgroundTextColor);
+                this.backgroundRepository.save(background);
+            }
+            if (backgroundTitleTextColor != null) {
+                background.setTitleTextColor(backgroundTitleTextColor);
                 this.backgroundRepository.save(background);
             }
         } else {

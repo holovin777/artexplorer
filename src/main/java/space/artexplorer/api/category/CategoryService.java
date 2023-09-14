@@ -51,6 +51,24 @@ public class CategoryService {
     }
 
     @Transactional
+    public void updateCategory(String categoryId, String categoryName, String categoryNameTextColor) {
+        Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
+        if (categoryOptional.isPresent()) {
+            Category category = categoryOptional.get();
+            if (categoryName != null) {
+                category.setName(categoryName);
+                categoryRepository.save(category);
+            }
+            if (categoryNameTextColor != null) {
+                category.setNameTextColor(categoryNameTextColor);
+                categoryRepository.save(category);
+            }
+        } else {
+            throw new IllegalStateException("Category with ID " + categoryId + " doesn't exists");
+        }
+    }
+
+    @Transactional
     public void addLaboratory(String categoryId, String laboratoryId) {
         Optional<Category> categoryOptional = this.categoryRepository.findById(categoryId);
         Optional<Laboratory> laboratoryOptional = this.laboratoryRepository.findById(laboratoryId);

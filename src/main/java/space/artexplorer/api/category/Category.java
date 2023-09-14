@@ -32,12 +32,23 @@ public class Category {
     )
     private String name;
 
+    @Column(
+            name = "name_text_color",
+            columnDefinition = "TEXT"
+    )
+    private String nameTextColor;
+
     @JsonIgnoreProperties("categories")
     @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "categories")
     private List<Laboratory> laboratories = new ArrayList<>();
 
     public Category(String name) {
         this.name = name;
+    }
+
+    public Category(String name, String nameTextColor) {
+        this.name = name;
+        this.nameTextColor = nameTextColor;
     }
 
     public Category() {}
@@ -75,6 +86,15 @@ public class Category {
         this.laboratories.remove(laboratory);
         laboratory.getCategories().remove(this);
     }
+
+    public String getNameTextColor() {
+        return nameTextColor;
+    }
+
+    public void setNameTextColor(String nameTextColor) {
+        this.nameTextColor = nameTextColor;
+    }
+
     @PrePersist
     public void generateIdFromName() {
         if (this.id == null && this.name != null) {
@@ -87,19 +107,20 @@ public class Category {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Category category = (Category) o;
-        return Objects.equals(id, category.id) && Objects.equals(name, category.name) && Objects.equals(laboratories, category.laboratories);
+        return Objects.equals(id, category.id) && Objects.equals(name, category.name) && Objects.equals(nameTextColor, category.nameTextColor) && Objects.equals(laboratories, category.laboratories);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, laboratories);
+        return Objects.hash(id, name, nameTextColor, laboratories);
     }
 
     @Override
     public String toString() {
         return "Category{" +
-                "id=" + id +
+                "id='" + id + '\'' +
                 ", name='" + name + '\'' +
+                ", nameTextColor='" + nameTextColor + '\'' +
                 ", laboratories=" + laboratories +
                 '}';
     }

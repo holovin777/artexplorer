@@ -38,6 +38,17 @@ public class CategoryController {
         return this.categoryService.getCategory(categoryId);
     }
 
+    @PutMapping(path = "{categoryId}/update")
+    public void updateCategory(
+        @PathVariable String categoryId,
+        @RequestParam(required = false) String categoryName,
+        @RequestParam(required = false) String categoryNameTextColor
+        ) {
+        this.categoryService.updateCategory(
+                categoryId, categoryName, categoryNameTextColor
+        );
+    }
+
     @PutMapping(path = "{categoryId}/laboratory")
     public void addLaboratory(@PathVariable String categoryId, @RequestParam String laboratoryId) {
         this.categoryService.addLaboratory(categoryId, laboratoryId);

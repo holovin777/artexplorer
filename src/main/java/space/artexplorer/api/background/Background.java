@@ -46,6 +46,12 @@ public class Background {
     )
     private String textColor;
 
+    @Column(
+            name = "title_text_color",
+            columnDefinition = "TEXT"
+    )
+    private String titleTextColor;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
             name = "laboratory_id",
@@ -56,21 +62,25 @@ public class Background {
     @JsonBackReference
     private Laboratory laboratory;
 
+    public Background(String url, String textColor, String textTitleColor, Laboratory laboratory) {
+        this.url = url;
+        this.textColor = textColor;
+        this.titleTextColor = textTitleColor;
+        this.laboratory = laboratory;
+    }
+
     public Background(Long id, String url, String textColor, Laboratory laboratory) {
-        this.id = id;
         this.url = url;
         this.textColor = textColor;
         this.laboratory = laboratory;
     }
 
     public Background(Long id, String url, String textColor) {
-        this.id = id;
         this.url = url;
         this.textColor = textColor;
     }
 
     public Background(Long id, String url) {
-        this.id = id;
         this.url = url;
     }
 
@@ -109,17 +119,25 @@ public class Background {
         this.laboratory = laboratory;
     }
 
+    public String getTitleTextColor() {
+        return titleTextColor;
+    }
+
+    public void setTitleTextColor(String titleTextColor) {
+        this.titleTextColor = titleTextColor;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Background that = (Background) o;
-        return Objects.equals(id, that.id) && Objects.equals(url, that.url) && Objects.equals(textColor, that.textColor) && Objects.equals(laboratory, that.laboratory);
+        return Objects.equals(id, that.id) && Objects.equals(url, that.url) && Objects.equals(textColor, that.textColor) && Objects.equals(titleTextColor, that.titleTextColor) && Objects.equals(laboratory, that.laboratory);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, url, textColor, laboratory);
+        return Objects.hash(id, url, textColor, titleTextColor, laboratory);
     }
 
     @Override
@@ -128,6 +146,7 @@ public class Background {
                 "id=" + id +
                 ", url='" + url + '\'' +
                 ", textColor='" + textColor + '\'' +
+                ", titleTextColor='" + titleTextColor + '\'' +
                 ", laboratory=" + laboratory +
                 '}';
     }

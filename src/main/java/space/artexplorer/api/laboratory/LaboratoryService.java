@@ -42,7 +42,13 @@ public class LaboratoryService {
     }
 
     @Transactional
-    public void updateLaboratory(String laboratoryId, String laboratoryTitle, String laboratoryDescription) {
+    public void updateLaboratory(
+        String laboratoryId,
+        String laboratoryTitle,
+        String laboratoryDescription,
+        Integer laboratoryMinAge,
+        Integer laboratoryMaxAge
+    ) {
         Optional<Laboratory> optionalLaboratory = this.laboratoryRepository.findById(laboratoryId);
         if (optionalLaboratory.isPresent()) {
             Laboratory laboratory = optionalLaboratory.get();
@@ -52,6 +58,14 @@ public class LaboratoryService {
             }
             if (laboratoryDescription != null) {
                 laboratory.setDescription(laboratoryDescription);
+                this.laboratoryRepository.save(laboratory);
+            }
+            if (laboratoryMinAge != null) {
+                laboratory.setMinAge(laboratoryMinAge);
+                this.laboratoryRepository.save(laboratory);
+            }
+            if (laboratoryMaxAge != null) {
+                laboratory.setMaxAge(laboratoryMaxAge);
                 this.laboratoryRepository.save(laboratory);
             }
         } else {

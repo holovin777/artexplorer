@@ -3,10 +3,9 @@ package space.artexplorer.api.photo;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import space.artexplorer.api.laboratory.Laboratory;
+import space.artexplorer.api.methods.StringManipulatorUtils;
 
 import java.util.Objects;
-
-import static space.artexplorer.api.methods.StringManipulatorUtils.generateStringId;
 
 @Entity(name = "Photo")
 @Table(
@@ -90,7 +89,7 @@ public class Photo {
     @PrePersist
     public void generateIdFromUrl() {
         if (this.id == null && this.url != null) {
-            this.id = generateStringId(this.url);
+            this.id = StringManipulatorUtils.generateStringPhotoId(this.url);
         }
     }
 
