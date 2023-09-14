@@ -41,7 +41,7 @@ public class LaboratoryController {
     }
 
     @DeleteMapping("/{laboratoryId}")
-    public void deleteLaboratoy(@PathVariable String laboratoryId) {
+    public void deleteLaboratory(@PathVariable String laboratoryId) {
         this.laboratoryService.deleteLaboratory(laboratoryId);
     }
 
@@ -49,8 +49,17 @@ public class LaboratoryController {
     public void updateLaboratory(
             @PathVariable String laboratoryId,
             @RequestParam(required = false) String laboratoryTitle,
-            @RequestParam(required = false) String laboratoryDescription) {
-        this.laboratoryService.updateLaboratory(laboratoryId, laboratoryTitle, laboratoryDescription);
+            @RequestParam(required = false) String laboratoryDescription,
+            @RequestParam(required = false) Integer laboratoryMinAge,
+            @RequestParam(required = false) Integer laboratoryMaxAge
+    ) {
+        this.laboratoryService.updateLaboratory(
+                laboratoryId,
+                laboratoryTitle,
+                laboratoryDescription,
+                laboratoryMinAge,
+                laboratoryMaxAge
+        );
     }
 
 }

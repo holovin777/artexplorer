@@ -72,10 +72,28 @@ public class Laboratory {
         )
         private List<Category> categories = new ArrayList<>();
 
+        @Column(
+                name = "min_age",
+                columnDefinition = "INTEGER"
+        )
+        private Integer minAge;
+
+        @Column(
+                name = "max_age",
+                columnDefinition = "INTEGER"
+        )
+        private Integer maxAge;
 
         public Laboratory(String title, String description) {
                 this.title = title;
                 this.description = description;
+        }
+
+        public Laboratory(String title, String description, Integer minAge, Integer maxAge) {
+                this.title = title;
+                this.description = description;
+                this.minAge = minAge;
+                this.maxAge = maxAge;
         }
 
         public Laboratory() {
@@ -116,6 +134,10 @@ public class Laboratory {
                 }
         }
 
+        public void setPhotos(List<Photo> photos) {
+                this.photos = photos;
+        }
+
         public void deletePhoto(Photo photo) {
                 if (this.photos.contains(photo)) {
                         this.photos.remove(photo);
@@ -149,6 +171,22 @@ public class Laboratory {
                 this.categories = categories;
         }
 
+        public Integer getMinAge() {
+                return this.minAge;
+        }
+
+        public void setMinAge(Integer minAge) {
+                this.minAge = minAge;
+        }
+
+        public Integer getMaxAge() {
+                return this.maxAge;
+        }
+
+        public void setMaxAge(Integer maxAge) {
+                this.maxAge = maxAge;
+        }
+
         @PrePersist
         public void generateIdFromTitle() {
                 if (this.id == null && this.title != null) {
@@ -161,23 +199,25 @@ public class Laboratory {
                 if (this == o) return true;
                 if (o == null || getClass() != o.getClass()) return false;
                 Laboratory that = (Laboratory) o;
-                return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(photos, that.photos) && Objects.equals(background, that.background) && Objects.equals(categories, that.categories);
+                return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(description, that.description) && Objects.equals(photos, that.photos) && Objects.equals(background, that.background) && Objects.equals(categories, that.categories) && Objects.equals(minAge, that.minAge) && Objects.equals(maxAge, that.maxAge);
         }
 
         @Override
         public int hashCode() {
-                return Objects.hash(id, title, description, photos, background, categories);
+                return Objects.hash(id, title, description, photos, background, categories, minAge, maxAge);
         }
 
         @Override
         public String toString() {
                 return "Laboratory{" +
-                        "id=" + id +
+                        "id='" + id + '\'' +
                         ", title='" + title + '\'' +
                         ", description='" + description + '\'' +
                         ", photos=" + photos +
                         ", background=" + background +
                         ", categories=" + categories +
+                        ", minAge=" + minAge +
+                        ", maxAge=" + maxAge +
                         '}';
         }
 }
