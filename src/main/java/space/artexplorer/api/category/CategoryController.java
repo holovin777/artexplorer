@@ -2,7 +2,6 @@ package space.artexplorer.api.category;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import space.artexplorer.api.laboratory.LaboratoryService;
 
 import java.util.List;
 
@@ -10,12 +9,10 @@ import java.util.List;
 @RequestMapping(path="api/v1/category")
 public class CategoryController {
     private final CategoryService categoryService;
-    private final LaboratoryService laboratoryService;
 
     @Autowired
-    public CategoryController(CategoryService categoryService, LaboratoryService laboratoryService) {
+    public CategoryController(CategoryService categoryService) {
         this.categoryService = categoryService;
-        this.laboratoryService = laboratoryService;
     }
 
     @GetMapping(path = "all")

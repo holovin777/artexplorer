@@ -26,9 +26,9 @@ public class Category {
     private String id;
 
     @Column(
-        name="name",
-        nullable = false,
-        columnDefinition = "TEXT"
+            name="name",
+            nullable = false,
+            columnDefinition = "TEXT"
     )
     private String name;
 
