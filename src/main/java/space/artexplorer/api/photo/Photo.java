@@ -28,7 +28,9 @@ public class Photo {
     )
     private String url;
 
-    @ManyToOne
+    @ManyToOne(
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
     @JoinColumn(
             name = "laboratory_id",
             referencedColumnName = "id",

@@ -44,20 +44,23 @@ public class Laboratory {
 
         @OneToMany(
                 mappedBy = "laboratory",
-                cascade = {CascadeType.ALL}
+                cascade = {CascadeType.ALL},
+                orphanRemoval = true
         )
         @JsonManagedReference
         private List<Photo> photos = new ArrayList<>();
 
         @OneToOne(
                 mappedBy = "laboratory",
-                cascade = {CascadeType.ALL}
+                cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
         )
-        @JsonManagedReference
+        @JsonIgnoreProperties(value = "laboratory")
         private Background background;
 
         @JsonIgnoreProperties("laboratories")
-        @ManyToMany(cascade = {CascadeType.ALL})
+        @ManyToMany(
+                cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+        )
         @JoinTable(
                 name = "collaboratorium",
                 joinColumns = @JoinColumn(

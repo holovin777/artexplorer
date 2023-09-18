@@ -1,6 +1,6 @@
 package space.artexplorer.api.background;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import space.artexplorer.api.laboratory.Laboratory;
 
@@ -13,10 +13,6 @@ import java.util.Objects;
                 @UniqueConstraint(
                         name = "background_url_unique",
                         columnNames = "url"
-                ),
-                @UniqueConstraint(
-                        name = "background_laboratory_id_key",
-                        columnNames = "laboratory_id"
                 )
         }
 )
@@ -25,7 +21,8 @@ public class Background {
     @Id
     @SequenceGenerator(
             name = "background_id_sequence",
-            sequenceName = "background_id_sequence"
+            sequenceName = "background_id_sequence",
+            allocationSize = 1
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
@@ -52,14 +49,15 @@ public class Background {
     )
     private String titleTextColor;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH}
+    )
     @JoinColumn(
             name = "laboratory_id",
             referencedColumnName = "id",
-            foreignKey = @ForeignKey(name = "laboratory_background_id_fk"),
-            unique = true
+            foreignKey = @ForeignKey(name = "laboratory_background_id_fk")
     )
-    @JsonBackReference
+    @JsonIgnoreProperties(value = "background")
     private Laboratory laboratory;
 
     public Background(String url, String textColor, String textTitleColor, Laboratory laboratory) {
@@ -69,18 +67,18 @@ public class Background {
         this.laboratory = laboratory;
     }
 
-    public Background(Long id, String url, String textColor, Laboratory laboratory) {
+    public Background(String url, String textColor, Laboratory laboratory) {
         this.url = url;
         this.textColor = textColor;
         this.laboratory = laboratory;
     }
 
-    public Background(Long id, String url, String textColor) {
+    public Background(String url, String textColor) {
         this.url = url;
         this.textColor = textColor;
     }
 
-    public Background(Long id, String url) {
+    public Background(String url) {
         this.url = url;
     }
 

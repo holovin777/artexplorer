@@ -52,7 +52,7 @@ public class BackgroundController {
     }
     
     @PutMapping(path = "{backgroundId}/laboratory")
-    public void seLaboratory(@PathVariable Long backgroundId, @RequestParam String laboratoryId) {
+    public void setLaboratory(@PathVariable Long backgroundId, @RequestParam String laboratoryId) {
         this.backgroundService.setLaboratory(backgroundId, laboratoryId);
     }
 

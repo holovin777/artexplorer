@@ -39,7 +39,10 @@ public class Category {
     private String nameTextColor;
 
     @JsonIgnoreProperties("categories")
-    @ManyToMany(cascade = {CascadeType.ALL}, mappedBy = "categories")
+    @ManyToMany(
+            cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},
+            mappedBy = "categories"
+    )
     private List<Laboratory> laboratories = new ArrayList<>();
 
     public Category(String name) {
