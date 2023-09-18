@@ -85,7 +85,7 @@ public class CustomerService {
         Optional<Customer> customerOptional = this.customerRepository.findById(customerId);
         if (customerOptional.isPresent()) {
             Customer customer = customerOptional.get();
-            customer.setAdmin(customerIsAdmin);
+            customer.setIsAdmin(customerIsAdmin);
         } else {
             throw new IllegalStateException("Customer with ID " + customerId + " doesn't exists");
         }
