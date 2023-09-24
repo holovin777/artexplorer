@@ -1,6 +1,7 @@
 package space.artexplorer.api.customer;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 import java.util.Objects;
 
@@ -37,6 +38,7 @@ public class Customer {
             nullable = false,
             columnDefinition = "TEXT"
     )
+    @NotBlank
     private String firstName;
 
     @Column(
