@@ -63,4 +63,13 @@ public class PhotoService {
         }
     }
 
+    @Transactional
+    public void deletePhoto(String photoId) {
+        Optional<Photo> photoOptional = this.photoRepository.findById(photoId);
+        if (photoOptional.isPresent()) {
+            Photo photo = photoOptional.get();
+            this.photoRepository.delete(photo);
+        }
+    }
+
 }

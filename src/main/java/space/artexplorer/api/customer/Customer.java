@@ -46,6 +46,7 @@ public class Customer {
             nullable = false,
             columnDefinition = "TEXT"
     )
+    @NotBlank
     private String lastName;
 
     @Column(
@@ -53,6 +54,7 @@ public class Customer {
             nullable = false,
             columnDefinition = "TEXT"
     )
+    @NotBlank
     private String phoneNumber;
 
     @Column(
@@ -60,6 +62,7 @@ public class Customer {
             nullable = false,
             columnDefinition = "TEXT"
     )
+    @NotBlank
     private String email;
 
     @Column(
