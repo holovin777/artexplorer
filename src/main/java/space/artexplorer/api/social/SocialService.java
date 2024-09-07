@@ -49,7 +49,7 @@ public class SocialService {
     }
 
     @Transactional
-    public void updateSocial(Long socialId, String socialLink, String socialDescription) {
+    public void updateSocial(Long socialId, String socialLink, String socialImageLink, String socialDescription) {
         Optional<Social> socialOptional = this.socialRepository.findById(socialId);
         if (socialOptional.isPresent()) {
             Social social = socialOptional.get();
@@ -58,7 +58,11 @@ public class SocialService {
                 this.socialRepository.save(social);
             }
             if (socialDescription != null) {
-                social.setLink(socialDescription);
+                social.setDescription(socialDescription);
+                this.socialRepository.save(social);
+            }
+            if (socialImageLink != null) {
+                social.setImageLink(socialImageLink);
                 this.socialRepository.save(social);
             }
         } else {

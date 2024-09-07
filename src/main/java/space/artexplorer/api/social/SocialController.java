@@ -36,9 +36,10 @@ public class SocialController {
     public void updateSocial(
             @PathVariable Long socialId,
             @RequestParam(required = false) String socialLink,
+            @RequestParam(required = false) String socialImageLink,
             @RequestParam(required = false) String socialDescription
     )
     {
-        this.socialService.updateSocial(socialId, socialLink, socialDescription);
+        this.socialService.updateSocial(socialId, socialLink, socialImageLink, socialDescription);
     }
 }

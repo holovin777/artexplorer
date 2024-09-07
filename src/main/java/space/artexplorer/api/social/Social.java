@@ -48,23 +48,35 @@ public class Social {
         private String link;
 
         @Column(
+                name="image_link",
+                columnDefinition = "TEXT"
+        )
+        private String imageLink;
+
+        @Column(
                 name = "description",
                 columnDefinition = "TEXT"
         )
         private String description;
 
-        public Social(String title, String link, String description) {
+        public Social(String title, String link, String imageLink, String description) {
                 this.title = title;
                 this.link = link;
+                this.imageLink = imageLink;
                 this.description = description;
+        }
+
+        public Social(String title, String link, String imageLink) {
+                this.title = title;
+                this.link = link;
+                this.imageLink = imageLink;
         }
 
         public Social(String title, String link) {
                 this.title = title;
                 this.link = link;
         }
-
-        public Social(){}
+        public Social() {}
 
         public Long getId() {
                 return id;
@@ -90,6 +102,14 @@ public class Social {
                 this.link = link;
         }
 
+        public String getImageLink() {
+                return imageLink;
+        }
+
+        public void setImageLink(String imageLink) {
+                this.imageLink = imageLink;
+        }
+
         public String getDescription() {
                 return description;
         }
@@ -103,12 +123,12 @@ public class Social {
                 if (this == o) return true;
                 if (o == null || getClass() != o.getClass()) return false;
                 Social social = (Social) o;
-                return Objects.equals(id, social.id) && Objects.equals(title, social.title) && Objects.equals(link, social.link) && Objects.equals(description, social.description);
+                return Objects.equals(id, social.id) && Objects.equals(title, social.title) && Objects.equals(link, social.link) && Objects.equals(imageLink, social.imageLink) && Objects.equals(description, social.description);
         }
 
         @Override
         public int hashCode() {
-                return Objects.hash(id, title, link, description);
+                return Objects.hash(id, title, link, imageLink, description);
         }
 
         @Override
@@ -117,6 +137,7 @@ public class Social {
                         "id=" + id +
                         ", title='" + title + '\'' +
                         ", link='" + link + '\'' +
+                        ", imageLink='" + imageLink + '\'' +
                         ", description='" + description + '\'' +
                         '}';
         }
