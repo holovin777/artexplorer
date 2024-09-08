@@ -30,6 +30,11 @@ public class BackgroundController {
         return backgroundService.getBackgrounds();
     }
 
+    @GetMapping(path = "{backgroundId}")
+    public Background getBackground(@PathVariable Long backgroundId) {
+        return this.backgroundService.getBackground(backgroundId);
+    }
+
     @PostMapping
     public void setBackground(@RequestBody Background background) {
         this.backgroundService.setBackground(background);
