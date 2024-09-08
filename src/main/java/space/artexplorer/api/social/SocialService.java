@@ -12,12 +12,10 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class SocialService {
     private final SocialRepository socialRepository;
-    private final LaboratoryRepository laboratoryRepository;
 
     @Autowired
     public SocialService(SocialRepository socialRepository, LaboratoryRepository laboratoryRepository) {
         this.socialRepository = socialRepository;
-        this.laboratoryRepository = laboratoryRepository;
     }
 
     public List<Social> getSocials() {
