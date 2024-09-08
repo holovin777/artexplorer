@@ -22,6 +22,11 @@ public class SocialController {
         return socialService.getSocials();
     }
 
+    @GetMapping(path = "{socialId}")
+    public Social getSocial(@PathVariable Long socialId) {
+        return this.socialService.getSocial(socialId);
+    }
+
     @PostMapping
     public void setSocial(@RequestBody Social social) {
         this.socialService.setSocial(social);
